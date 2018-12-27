@@ -17,9 +17,7 @@ pipeline {
       }
     }
     stage('Push result image') {
-      when {
-        branch 'master'
-      }
+      
       steps {
         withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
           sh 'docker push dockersamples/result'
@@ -27,9 +25,7 @@ pipeline {
       }
     }
     stage('Push vote image') {
-      when {
-        branch 'master'
-      }
+      
       steps {
         withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
           sh 'docker push dockersamples/vote'
@@ -37,9 +33,7 @@ pipeline {
       }
     }
     stage('Push worker image') {
-      when {
-        branch 'master'
-      }
+      
       steps {
         withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
           sh 'docker push dockersamples/worker'

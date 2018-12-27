@@ -16,33 +16,35 @@ pipeline {
         sh 'docker build -t dockersamples/worker ./worker'
       }
     }
-
-    stage('Push Docker Image') {
-            
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
-                }
-            }
+    stage('Push result image') {
+      when {
+        branch 'master'
+      }
+      steps {
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
+          sh 'docker push dockersamples/result'
         }
-    
-          stage('DeployToProduction') {
-            
-            steps {
-                input 'Deploy to Production?'
-                milestone(1)
-                //implement Kubernetes deployment here
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'kube-deployment.yml',
-                    enableConfigSubstitution: true
-                )
-            }
+      }
+    }
+    stage('Push vote image') {
+      when {
+        branch 'master'
+      }
+      steps {
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
+          sh 'docker push dockersamples/vote'
         }
-
+      }
+    }
+    stage('Push worker image') {
+      when {
+        branch 'master'
+      }
+      steps {
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
+          sh 'docker push dockersamples/worker'
+        }
+      }
+    }
   }
 }
-
