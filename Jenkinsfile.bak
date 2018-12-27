@@ -18,9 +18,7 @@ pipeline {
     }
 
     stage('Push Docker Image') {
-            when {
-                branch 'master'
-            }
+            
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
@@ -32,9 +30,7 @@ pipeline {
         }
     
           stage('DeployToProduction') {
-            when {
-                branch 'master'
-            }
+            
             steps {
                 input 'Deploy to Production?'
                 milestone(1)
