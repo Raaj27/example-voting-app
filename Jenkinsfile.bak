@@ -23,7 +23,7 @@ pipeline {
       
       steps {
         withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
-          sh 'docker push devenv27/result'
+          sh 'docker push devenv27/result:latest'
         }
       }
     }
@@ -31,14 +31,14 @@ pipeline {
       
       steps {
         withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
-          sh 'docker push devenv27/vote'        }
+          sh 'docker push devenv27/vote:latest'        }
       }
     }
     stage('Push worker image') {
       
       steps {
         withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
-          sh 'docker push devenv27/worker'        }
+          sh 'docker push devenv27/worker:latest'        }
       }
     }
   }
