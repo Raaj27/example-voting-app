@@ -5,20 +5,20 @@ pipeline {
     stage('Build result') {
       steps {
         sh 'docker build -t dockersamples/result ./result'
-        sh 'docker tag result devenv27/result'
+        sh 'docker tag dockersamples/result:latest devenv27/result:latest'
       }
     } 
     stage('Build vote') {
       steps {
         sh 'docker build -t dockersamples/vote ./vote'
-        sh 'docker tag vote devenv27/vote'
+        sh 'docker tag dockersamples/vote:latest devenv27/vote:latest'
 
       }
     }
     stage('Build worker') {
       steps {
         sh 'docker build -t dockersamples/worker ./worker'
-        sh 'docker tag worker devenv27/worker'
+        sh 'docker tag dockersamples/worker:latest devenv27/worker:latest'
 
       }
     }
