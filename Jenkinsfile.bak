@@ -1,5 +1,9 @@
 pipeline {
   agent any
+  environment {
+        //be sure to replace "willbla" with your own Docker Hub username
+        DOCKER_IMAGE_NAME = "devenv27/dockersamples"
+    }
   stages {
     stage('Build result') {
       steps {
@@ -20,6 +24,7 @@ pipeline {
       
       steps {
         withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
+
           sh 'docker push dockersamples/result'
         }
       }
