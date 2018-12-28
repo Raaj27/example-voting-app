@@ -1,28 +1,26 @@
 pipeline {
   agent any
-  
+
   stages {
     stage('Build result') {
       steps {
-        sh 'docker build ./result'
+        sh 'docker build -t devenv27/result ./result'
       }
     } 
     stage('Build vote') {
       steps {
-        sh 'docker build  ./vote'
-
+        sh 'docker build -t devenv27/vote ./vote'
       }
     }
     stage('Build worker') {
       steps {
-        sh 'docker build  ./worker'
-
+        sh 'docker build -t devenv27/worker ./worker'
       }
     }
     stage('Push result image') {
       
       steps {
-        withDockerRegistry(credentialsId: 'dockerhub', url:'https://docker.io') {
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
           sh 'docker push devenv27/result'
         }
       }
@@ -30,15 +28,17 @@ pipeline {
     stage('Push vote image') {
       
       steps {
-        withDockerRegistry(credentialsId: 'dockerhub', url:'https://docker.io') {
-          sh 'docker push devenv27/vote'        }
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
+          sh 'docker push devenv27/vote'
+        }
       }
     }
     stage('Push worker image') {
-      
+  
       steps {
-        withDockerRegistry(credentialsId: 'dockerhub', url:'https://docker.io') {
-          sh 'docker push devenv27/worker'        }
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://registry.hub.docker.com') {
+          sh 'docker push devenv27/worker'
+        }
       }
     }
   }
