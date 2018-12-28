@@ -4,18 +4,18 @@ pipeline {
   stages {
     stage('Build result') {
       steps {
-        sh 'docker build -t devenv27/result ./result'
+        sh 'docker build ./result'
       }
     } 
     stage('Build vote') {
       steps {
-        sh 'docker build -t devenv27/vote ./vote'
+        sh 'docker build  ./vote'
 
       }
     }
     stage('Build worker') {
       steps {
-        sh 'docker build -t devenv27/worker ./worker'
+        sh 'docker build  ./worker'
 
       }
     }
