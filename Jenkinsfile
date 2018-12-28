@@ -1,30 +1,44 @@
 pipeline {
-  environment {
-    registry = “devenv27/aspnet”
-    registryCredential = ‘dockerhub’
-    dockerImage = ‘’
-  }
   agent any
+  
   stages {
-    stage(‘Cloning Git’) {
+    stage('Build result') {
       steps {
-        git ‘https://github.com/Raaj27/aspnetapp.git'
+        sh 'docker build -t devenv27/result ./result'
+      }
+    } 
+    stage('Build vote') {
+      steps {
+        sh 'docker build -t devenv27/vote ./vote'
+
       }
     }
-    stage(‘Building image’) {
-      steps{
-        script {
-          dockerImage = docker.build registry + “:$BUILD_NUMBER”
+    stage('Build worker') {
+      steps {
+        sh 'docker build -t devenv27/worker ./worker'
+
+      }
+    }
+    stage('Push result image') {
+      
+      steps {
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://docker.io') {
+          sh 'docker push devenv27/results'
         }
       }
     }
-    stage(‘Deploy Image’) {
-      steps{
-        script {
-          docker.withRegistry( ‘’, registryCredential ) {
-            dockerImage.push()
-          }
-        }
+    stage('Push vote image') {
+      
+      steps {
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://docker.io') {
+          sh 'docker push devenv27/votes'        }
+      }
+    }
+    stage('Push worker image') {
+      
+      steps {
+        withDockerRegistry(credentialsId: 'dockerhub', url:'https://docker.io') {
+          sh 'docker push devenv27/workers'        }
       }
     }
   }
